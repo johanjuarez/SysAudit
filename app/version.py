@@ -1,0 +1,5 @@
+from config import APP_NAME, VERSION
+
+def get_version():
+
+    return f"{APP_NAME} {VERSION}"
