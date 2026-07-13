@@ -105,7 +105,7 @@ def write_partitions(file, partitions):
         write_field(file, "Capacidad total", partition["total"])
         write_field(file, "Espacio libre", partition["free"])
         write_field(file, "Uso", partition["used_percent"])
-  
+
 
     
 
