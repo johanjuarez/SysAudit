@@ -10,11 +10,32 @@ from app.utils import safe_execute
 
 def collect_inventory():
 
-    return {
+    inventory = Inventory()
 
-        "system": safe_execute(get_system_info,{}),
-        "hardware": safe_execute(get_hardware_info,{}),
-        "network": safe_execute(get_network_info,{}),
-        "software": safe_execute(get_software_info,{})
-        
-    }
+    inventory.system = safe_execute(
+        get_system_info,
+        {}
+    )
+
+    inventory.hardware = safe_execute(
+        get_hardware_info,
+        {}
+    )
+
+    inventory.network = safe_execute(
+        get_network_info,
+        {}
+    )
+
+    inventory.software = safe_execute(
+        get_software_info,
+        {}
+    )
+
+    inventory.security = safe_execute(
+        get_security_info,
+        {}
+    )
+
+
+    return inventory
