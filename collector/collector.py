@@ -12,30 +12,11 @@ def collect_inventory():
 
     inventory = Inventory()
 
-    inventory.system = safe_execute(
-        get_system_info,
-        {}
-    )
-
-    inventory.hardware = safe_execute(
-        get_hardware_info,
-        {}
-    )
-
-    inventory.network = safe_execute(
-        get_network_info,
-        {}
-    )
-
-    inventory.software = safe_execute(
-        get_software_info,
-        {}
-    )
-
-    inventory.security = safe_execute(
-        get_security_info,
-        {}
-    )
+    inventory.system = safe_execute(get_system_info,{})
+    inventory.hardware = safe_execute(get_hardware_info,{})
+    inventory.network = safe_execute(get_network_info,{})
+    inventory.software = safe_execute(get_software_info,{})
+    inventory.security = safe_execute(get_security_info,{})
 
 
     return inventory
