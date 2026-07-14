@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 
 from models.system import SystemInfo
+from models.hardware import HardwareInfo
 
 
 @dataclass
@@ -8,7 +9,7 @@ class Inventory:
 
     system: SystemInfo = field(default_factory=SystemInfo)
 
-    hardware: dict = field(default_factory=dict)
+    hardware: HardwareInfo = field(default_factory=HardwareInfo)
 
     network: dict = field(default_factory=dict)
 
