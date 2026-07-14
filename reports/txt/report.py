@@ -1,5 +1,6 @@
 from pathlib import Path
 from datetime import datetime
+from config import (APP_NAME, APP_DESCRIPTION, AUTHOR, VERSION)
 
 from reports.txt.common import write_separator
 from reports.txt.hardware import write_hardware
@@ -38,13 +39,14 @@ def write_header(file):
 
     write_separator(file)
 
-    file.write("SYSAUDIT - REPORTE DE EQUIPOS\n")
+    file.write(f"{APP_NAME.upper()} - REPORTE DE EQUIPOS\n")
 
     write_separator(file)
 
-    file.write(
-        f"Fecha de generacion: {datetime.now():%Y-%m-%d %H:%M:%S}\n"
-    )
+    file.write(f"Version: {VERSION}\n")
+    file.write(f"Descripcion: {APP_DESCRIPTION}\n")
+    file.write(f"Autor: {AUTHOR}\n")
+    file.write(f"Fecha de generacion: {datetime.now():%Y-%m-%d %H:%M:%S}\n")
 
 
 def write_footer(file):
