@@ -63,11 +63,17 @@ def get_installed_programs():
         )
 
 
+    programs = clean_programs(programs)
+
+    return categorize_programs(programs) 
+
+def clean_programs(programs):
+
     programs = remove_duplicates(programs)
 
     programs = sort_programs(programs)
 
-    return categorize_programs(programs)  
+    return programs
 
 
 def read_registry(hive, path):
@@ -76,67 +82,58 @@ def read_registry(hive, path):
 
     try:
 
-        registry = winreg.OpenKey(hive, path)
+        with winreg.OpenKey(hive, path) as registry:
+
+            total = winreg.QueryInfoKey(registry)[0]
+
+            for index in range(total):
+
+                try:
+
+                    subkey_name = winreg.EnumKey(
+                        registry,
+                        index
+                    )
+
+                    with winreg.OpenKey(registry, subkey_name) as subkey:
+
+                        program = {
+
+                            "name": get_registry_value(
+                                subkey,
+                                "DisplayName"
+                            ),
+
+                            "version": get_registry_value(
+                                subkey,
+                                "DisplayVersion"
+                            ),
+
+                            "publisher": get_registry_value(
+                                subkey,
+                                "Publisher"
+                            ),
+
+                            "install_date": get_registry_value(
+                                subkey,
+                                "InstallDate"
+                            )
+
+                        }
+
+                        if is_valid_program(program):
+
+                            programs.append(program)
+
+                except OSError:
+
+                    continue
 
     except FileNotFoundError:
 
-        return programs
-
-
-    total = winreg.QueryInfoKey(registry)[0]
-
-
-    for index in range(total):
-
-        try:
-
-            subkey_name = winreg.EnumKey(
-                registry,
-                index
-            )
-
-            subkey = winreg.OpenKey(
-                registry,
-                subkey_name
-            )
-
-            name = get_registry_value(
-                subkey,
-                "DisplayName"
-            )
-
-            if not name:
-                continue
-
-            program = {
-
-                "name": name,
-
-                "version": get_registry_value(
-                    subkey,
-                    "DisplayVersion"
-                ),
-
-                "publisher": get_registry_value(
-                    subkey,
-                    "Publisher"
-                ),
-
-                "install_date": get_registry_value(
-                    subkey,
-                    "InstallDate"
-                )
-
-            }
-
-            programs.append(program)
-
-        except OSError:
-
-            continue
+        pass
 
     return programs
-
 
 def get_registry_value(key, value_name):
 
@@ -149,7 +146,7 @@ def get_registry_value(key, value_name):
 
         return value
 
-    except FileNotFoundError:
+    except OSError:
 
         return ""
 
@@ -168,19 +165,23 @@ def sort_programs(programs):
 def remove_duplicates(programs):
 
     unique_programs = []
-    seen = set()
+
+    unique_keys = set()
 
     for program in programs:
 
         name = program.get("name", "").strip().lower()
+
         version = program.get("version", "").strip().lower()
 
-        key = (name, version)
+        program_key = (name, version)
 
-        if key in seen:
+        if program_key in unique_keys:
+
             continue
 
-        seen.add(key)
+        unique_keys.add(program_key)
+
         unique_programs.append(program)
 
     return unique_programs
@@ -193,7 +194,7 @@ def is_valid_program(program):
     if not name:
         return False
 
-    ignored_keywords = [
+    IGNORED_KEYWORDS = [
 
         "Update for",
 
@@ -217,7 +218,7 @@ def is_valid_program(program):
 
     ]
 
-    for keyword in ignored_keywords:
+    for keyword in IGNORED_KEYWORDS:
 
         if keyword.lower() in name.lower():
 
@@ -261,7 +262,7 @@ def categorize_programs(programs):
 
 def classify_program(program):
 
-    name = program["name"].lower()
+    name = program.get("name", "").lower()
 
 
     # Navegadores
