@@ -9,6 +9,7 @@ class CPUInfo:
     manufacturer: str = ""
     cores: int = 0
     threads: int = 0
+    max_frequency: float = 0.0
 
 
 @dataclass
