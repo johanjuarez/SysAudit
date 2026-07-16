@@ -7,7 +7,6 @@ def main():
 
     logger = setup_logger()
     logger.info("Starting SysAudit")
-
     inventory = collect_inventory()
 
     logger.info("Inventory collection completed")
