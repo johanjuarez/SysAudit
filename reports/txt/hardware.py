@@ -16,12 +16,16 @@ def write_hardware(file, hardware):
 
 def write_cpu(file, cpu):
 
-    file.write("\nCPU/PROCESADOR\n")
-    
-    write_field(file,"Modelo",cpu["name"])
-    write_field(file,"Fabricante",cpu["manufacturer"])
-    write_field(file,"Núcleos",cpu["cores"])
-    write_field(file,"Hilos",cpu["threads"])
+    file.write("\nProcesador\n")
+    write_field(file,"Modelo",cpu.model)
+    write_field(file,"Fabricante",cpu.manufacturer)
+    write_field(file,"Nucleos",cpu.cores)
+    write_field(file,"Hilos",cpu.threads)
+    write_field(
+        file,
+        "Frecuencia maxima",
+        f"{cpu.max_frequency} MHz"
+    )
 
 def write_bios(file,bios):
     file.write("\nBIOS\n")

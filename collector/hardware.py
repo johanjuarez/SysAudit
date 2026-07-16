@@ -1,6 +1,9 @@
 """
 Módulo encargado de recolectar información del hardware del equipo.
 """
+from models.hardware import (HardwareInfo, CPUInfo, MemoryInfo, MemoryModule, 
+    MotherboardInfo, GPUInfo,BatteryInfo, DiskInfo, PartitionInfo, StorageInfo)
+
 
 import psutil
 import wmi
@@ -17,16 +20,15 @@ def get_cpu():
 
     cpu = wmi_connection.Win32_Processor()[0]
 
-    return {
+    return CPUInfo(
 
-        "name": cpu.Name.strip(),
-        "manufacturer": cpu.Manufacturer,
-        "cores": cpu.NumberOfCores,
-        "threads": cpu.NumberOfLogicalProcessors,
-        "max_clock_speed": f"{cpu.MaxClockSpeed} MHz",
-        "usage": f"{psutil.cpu_percent(interval=1)}%"
+        model=cpu.Name.strip(),
+        manufacturer=cpu.Manufacturer,
+        cores=cpu.NumberOfCores,
+        threads=cpu.NumberOfLogicalProcessors,
+        max_frequency=cpu.MaxClockSpeed
 
-    }
+    )
 
 
 # MEMORIA RAM
