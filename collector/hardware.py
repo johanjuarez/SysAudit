@@ -40,34 +40,28 @@ def get_memory():
 
     for ram in wmi_connection.Win32_PhysicalMemory():
 
-        modules.append({
+        modules.append(
+            MemoryModule(
+                manufacturer=ram.Manufacturer,
+                capacity=round(
+                    int(ram.Capacity)/(1024 ** 3),
+                    2
+                    ),
+                    speed=ram.Speed,
+                    location=ram.DeviceLocator,
+                    serial=ram.SerialNumber
+    )
+)
 
-            "manufacturer": ram.Manufacturer,
-            "capacity": round(
-                int(ram.Capacity) / (1024 ** 3),
-                2
-            ),
-            "speed": ram.Speed,
-            "slot": ram.DeviceLocator,
-            "serial": ram.SerialNumber
 
-        })
+    return MemoryInfo(
 
+    total=round(memory.total / (1024 ** 3),2),
+    available=round(memory.available / (1024 ** 3),2),
+    used_percent=memory.percent,
+    modules=modules
 
-    return {
-
-        "total": round(
-            memory.total / (1024 ** 3),
-            2
-        ),
-        "available": round(
-            memory.available / (1024 ** 3),
-            2
-        ),
-        "used_percent": memory.percent,
-        "modules": modules
-
-    }
+)
 
 
 # MOTHERBOARD

@@ -39,22 +39,22 @@ def write_memory(file, memory):
 
     file.write("\nMEMORIA\n")
 
-    write_field(file, "Total", f"{memory['total']} GB")
-    write_field(file, "Disponible", f"{memory['available']} GB")
-    write_field(file, "Uso", f"{memory['used_percent']} %")
-
+    write_field(file,"Total",f"{memory.total} GB")
+    write_field(file,"Disponible",f"{memory.available} GB")
+    write_field(file,"Uso",f"{memory.used_percent} %")
     file.write("\nMódulos instalados\n")
 
-    for index, module in enumerate(memory["modules"], start=1):
+    for index, module in enumerate(memory.modules, start=1):
 
         file.write(f"\nSlot {index}\n")
 
-        write_field(file, "Fabricante", module["manufacturer"])
-        write_field(file, "Capacidad", f"{module['capacity']} GB")
-        write_field(file, "Velocidad", f"{module['speed']} MHz")
-        write_field(file, "Ubicación", module["slot"])
-        write_field(file, "Serial", module["serial"])
+        write_field(file,"Fabricante",module.manufacturer)
+        write_field(file,"Capacidad",f"{module.capacity} GB")
+        write_field(file,"Velocidad",f"{module.speed} MHz")
+        write_field(file,"Ubicación",module.location)
+        write_field(file,"Serial",module.serial)
 
+        
 def write_motherboard(file,motherboard):
     file.write("\nPLACA MADRE\n")
 
