@@ -54,7 +54,6 @@ def write_memory(file, memory):
         write_field(file,"Ubicación",module.location)
         write_field(file,"Serial",module.serial)
 
-        
 def write_motherboard(file,motherboard):
     file.write("\nPLACA MADRE\n")
 
